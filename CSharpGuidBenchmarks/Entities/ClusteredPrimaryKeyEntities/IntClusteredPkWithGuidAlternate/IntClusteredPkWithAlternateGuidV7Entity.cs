@@ -1,0 +1,13 @@
+namespace CSharpGuidBenchmarks.Entities.ClusteredPrimaryKeyEntities.IntClusteredPkWithGuidAlternate;
+
+public class IntClusteredPkWithAlternateGuidV7Entity : AlternateKeyEntity<int, Guid>, IGuidAkEntity
+{
+    public IntClusteredPkWithAlternateGuidV7Entity(int primaryKey, string payload, Guid alternateKey) : base(primaryKey, payload, alternateKey)
+    {
+    }
+    
+    public static IntClusteredPkWithAlternateGuidV7Entity Create(string payload)
+    {
+        return new IntClusteredPkWithAlternateGuidV7Entity(0, payload, Guid.CreateVersion7());
+    }
+}

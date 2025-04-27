@@ -4,3 +4,38 @@
     build:
       context: .
       dockerfile: CSharpGuidBenchmarks/Dockerfile
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest # Use a specific SQL Server version
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Password123" # CHANGE THIS PASSWORD
+      # Optional: Set initial DB if needed, but EnsureCreated handles it
+      # MSSQL_DB: BenchmarkDB
+      # MSSQL_USER: benchmarkUser
+      # MSSQL_PASSWORD: "YourStrong@Password123"
+    ports:
+      - "1433:1433" # Expose port for potential external inspection (optional)
+    volumes:
+      # Use a named volume for data persistence *between* docker-compose up/down runs
+      # Remove the volume manually (docker volume rm sqlbenchmarkapp_sql_data) for a truly clean run
+      - sql_data:/var/opt/mssql
+    deploy: # Resource limits section
+      resources:
+        limits:
+          # --- START LOW --- (Example: 2 cores, 4GB RAM)
+          cpus: '2.0'
+          memory: 4G
+          # --- INCREASE LATER --- (Example: 4 cores, 8GB RAM)
+          # cpus: '4.0'
+          # memory: 8G
+          # --- MAX --- (Example: 8 cores, 32GB RAM)
+          # cpus: '8.0'
+          # memory: 32G
+    healthcheck: # Add a basic healthcheck for SQL Server
+      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong@Password123", "-Q", "SELECT 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      
+volumes:
+  sql_data:
