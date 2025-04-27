@@ -1,0 +1,6 @@
+﻿services:
+  csharpguidbenchmarks:
+    image: csharpguidbenchmarks
+    build:
+      context: .
+      dockerfile: CSharpGuidBenchmarks/Dockerfile
