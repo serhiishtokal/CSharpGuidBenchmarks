@@ -4,6 +4,7 @@ using CSharpGuidBenchmarks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSharpGuidBenchmarks.Migrations
 {
     [DbContext(typeof(BenchmarkDbContext))]
-    partial class BenchmarkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250531203221_Create_GuidNonClusteredPkWithLongSeqClusteredEntities")]
+    partial class Create_GuidNonClusteredPkWithLongSeqClusteredEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,114 +199,6 @@ namespace CSharpGuidBenchmarks.Migrations
                     b.HasAlternateKey("AlternateKey");
 
                     b.ToTable("IntClusteredPkWithAlternateGuidV7Entities");
-                });
-
-            modelBuilder.Entity("CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities.GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity", b =>
-                {
-                    b.Property<byte[]>("PrimaryKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("binary(16)");
-
-                    b.Property<DateTime>("AlternateKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("PrimaryKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("PrimaryKey"), false);
-
-                    b.HasAlternateKey("AlternateKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasAlternateKey("AlternateKey"));
-
-                    b.ToTable("GuidV4Bin16NonClusteredPkWithDateTimeSeqClusteredEntities");
-                });
-
-            modelBuilder.Entity("CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities.GuidV4NonClusteredPkWithDateTimeClusteredEntity", b =>
-                {
-                    b.Property<Guid>("PrimaryKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AlternateKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("PrimaryKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("PrimaryKey"), false);
-
-                    b.HasAlternateKey("AlternateKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasAlternateKey("AlternateKey"));
-
-                    b.ToTable("GuidV4NonClusteredPkWithDateTimeSeqClusteredEntities");
-                });
-
-            modelBuilder.Entity("CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities.GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity", b =>
-                {
-                    b.Property<byte[]>("PrimaryKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("binary(16)");
-
-                    b.Property<DateTime>("AlternateKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("PrimaryKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("PrimaryKey"), false);
-
-                    b.HasAlternateKey("AlternateKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasAlternateKey("AlternateKey"));
-
-                    b.ToTable("GuidV7Bin16NonClusteredPkWithDateTimeSeqClusteredEntities");
-                });
-
-            modelBuilder.Entity("CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities.GuidV7NonClusteredPkWithDateTimeClusteredEntity", b =>
-                {
-                    b.Property<Guid>("PrimaryKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AlternateKey")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Payload")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("PrimaryKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("PrimaryKey"), false);
-
-                    b.HasAlternateKey("AlternateKey");
-
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasAlternateKey("AlternateKey"));
-
-                    b.ToTable("GuidV7NonClusteredPkWithDateTimeSeqClusteredEntities");
                 });
 
             modelBuilder.Entity("CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities.GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity", b =>

@@ -4,6 +4,7 @@ using CSharpGuidBenchmarks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSharpGuidBenchmarks.Migrations
 {
     [DbContext(typeof(BenchmarkDbContext))]
-    partial class BenchmarkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250531203855_Create_GuidNonClusteredPkWithDateTimeSeqClusteredEntities")]
+    partial class Create_GuidNonClusteredPkWithDateTimeSeqClusteredEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

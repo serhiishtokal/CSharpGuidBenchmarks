@@ -30,22 +30,22 @@ public class BenchmarkDbContext : DbContext
     
     // int non-clustered primary key entities 
     public DbSet<GuidV4NonClusteredPkWithIntSeqClusteredEntity> GuidV4NonClusteredPkWithIntSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7NonClusteredPkWithIntSeqClusteredEntity> GuidV7NonClusteredPkWithIntSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
+    public DbSet<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7NonClusteredPkWithIntSeqClusteredEntity> GuidV7NonClusteredPkWithIntSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
     //
     // // long non clustered primary key entities 
-    // public DbSet<GuidV4NonClusteredPkWithLongSeqClusteredEntity> GuidV4NonClusteredPkWithLongSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7NonClusteredPkWithLongSeqClusteredEntity> GuidV7NonClusteredPkWithLongSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntities { get; set; }
+    public DbSet<GuidV4NonClusteredPkWithLongSeqClusteredEntity> GuidV4NonClusteredPkWithLongSeqClusteredEntities { get; set; }
+    public DbSet<GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7NonClusteredPkWithLongSeqClusteredEntity> GuidV7NonClusteredPkWithLongSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntities { get; set; }
     //
     // // DateTime non clustered primary key entities
-    // public DbSet<GuidV4NonClusteredPkWithIntSeqClusteredEntity> GuidV4NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7NonClusteredPkWithIntSeqClusteredEntity> GuidV7NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
-    // public DbSet<GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
-    //
+    public DbSet<GuidV4NonClusteredPkWithDateTimeClusteredEntity> GuidV4NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
+    public DbSet<GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity> GuidV4Bin16NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7NonClusteredPkWithDateTimeClusteredEntity> GuidV7NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
+    public DbSet<GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity> GuidV7Bin16NonClusteredPkWithDateTimeSeqClusteredEntities { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -109,8 +109,15 @@ public static class ModelBuilderExtensions
         foreach (var entityType in entityTypes)
         {
             var entityBuilder = modelBuilder.Entity(entityType.ClrType);
-            entityBuilder.Property(nameof(IAlternateKeyValueGeneratedOnAddEntity<bool>.AlternateKey))
-                .ValueGeneratedOnAdd();
+            var property = entityBuilder.Property(nameof(IAlternateKeyValueGeneratedOnAddEntity<bool>.AlternateKey));
+            property.ValueGeneratedOnAdd();
+            var isDateTime = entityType.ClrType.GetInterfaces().Any(x=>x ==typeof(IAlternateKeyValueGeneratedOnAddEntity<DateTime>));
+            if (isDateTime)
+            {
+                property.HasDefaultValueSql("GETUTCDATE()");
+            }
+            
+
         }
     }
 }
