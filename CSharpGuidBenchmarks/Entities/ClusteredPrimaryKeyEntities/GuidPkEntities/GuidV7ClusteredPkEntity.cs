@@ -1,6 +1,6 @@
 namespace CSharpGuidBenchmarks.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 
-public class GuidV7ClusteredPkEntity : Entity<Guid>, IGuidPkEntity
+public class GuidV7ClusteredPkEntity : Entity<Guid>
 {
     private GuidV7ClusteredPkEntity(Guid primaryKey, string payload) : base(primaryKey, payload)
     {

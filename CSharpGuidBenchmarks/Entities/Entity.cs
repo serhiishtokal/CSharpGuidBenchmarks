@@ -4,10 +4,7 @@ namespace CSharpGuidBenchmarks.Entities;
 
 public abstract class Entity<T> : IEntity<T> where T : struct
 {
-    private Entity()
-    {
-        
-    }
+    private Entity() { }
     
     protected Entity(T primaryKey, string payload)
     {

@@ -1,11 +1,10 @@
-using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities.Abstractions;
-
 namespace CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities;
 
-public class GuidV7NonClusteredPkWithDateTimeClusteredEntity : GuidNonClusteredPrimaryKeyWithDateTimeSeqClusteredEntity
+public class GuidV7NonClusteredPkWithDateTimeClusteredEntity : AlternateKeyEntity<Guid, DateTime>,
+    IClusteredAkEntity<Guid, DateTime>
 {
-    private GuidV7NonClusteredPkWithDateTimeClusteredEntity(Guid primaryKey, string payload,
-        DateTime alternateKey) : base(primaryKey, payload, alternateKey)
+    public GuidV7NonClusteredPkWithDateTimeClusteredEntity(Guid primaryKey, string payload, DateTime alternateKey) :
+        base(primaryKey, payload, alternateKey)
     {
     }
 

@@ -1,3 +1,4 @@
+using CSharpGuidBenchmarks.Entities;
 using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities;
 using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.LongEntities;
 using CSharpGuidBenchmarks.Extensions;
@@ -13,7 +14,7 @@ public class IsAssignableToGenericTypeTests
         var type = typeof(GuidV7NonClusteredPkWithLongSeqClusteredEntity);
         
         // Act
-        var result = type.IsAssignableToGenericType(typeof(IClusteredIndexEntity<>));
+        var result = type.IsAssignableToGenericType(typeof(IClusteredAkEntity<,>));
         
         // Assert
         Assert.True(result);

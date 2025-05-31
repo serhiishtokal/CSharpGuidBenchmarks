@@ -1,6 +1,8 @@
 namespace CSharpGuidBenchmarks.Entities;
 
-public interface IClusteredAkEntity<TAkType> where TAkType : struct
+public interface IClusteredAkEntity<TPk, TAk> : IEntity<TPk>
+    where TPk : struct
+    where TAk : struct
 {
-    TAkType AlternateKey { get; set; }
+    TAk AlternateKey { get; }
 }

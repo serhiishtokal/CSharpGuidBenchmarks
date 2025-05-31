@@ -1,17 +1,16 @@
-using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities.
-    Abstractions;
-
 namespace CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities;
 
-public class GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity : GuidNonClusteredPrimaryKeyWithIntSeqClusteredEntity
+public class GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity : AlternateKeyEntity<Guid, int>, IClusteredAkEntity<Guid, int>
 {
-    private GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity(Guid primaryKey, string payload, int alternateKey) :
-        base(primaryKey, payload, alternateKey)
+    public GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity(Guid primaryKey, string payload, int alternateKey) : base(primaryKey, payload, alternateKey)
     {
     }
-
+    
     public static GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity Create(string payload)
     {
         return new GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity(Guid.CreateVersion7(), payload, 0);
     }
+    
+    [BinaryGuid]
+    public override Guid PrimaryKey => base.PrimaryKey;
 }
