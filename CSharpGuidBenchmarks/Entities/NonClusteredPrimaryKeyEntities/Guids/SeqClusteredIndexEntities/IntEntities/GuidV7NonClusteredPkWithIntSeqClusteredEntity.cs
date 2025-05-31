@@ -1,6 +1,6 @@
 namespace CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities;
 
-public class GuidV7NonClusteredPkWithIntSeqClusteredEntity : AlternateKeyEntity<Guid, int>, IClusteredAkEntity<Guid, int>
+public class GuidV7NonClusteredPkWithIntSeqClusteredEntity : AlternateKeyEntity<Guid, int>, IClusteredAkEntity<Guid, int>, IAlternateKeyValueGeneratedOnAddEntity<int>
 {
     public GuidV7NonClusteredPkWithIntSeqClusteredEntity(Guid primaryKey, string payload, int alternateKey) : base(primaryKey, payload, alternateKey)
     {

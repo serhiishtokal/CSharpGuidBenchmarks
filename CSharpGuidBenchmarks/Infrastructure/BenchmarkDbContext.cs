@@ -29,7 +29,7 @@ public class BenchmarkDbContext : DbContext
     public DbSet<IntClusteredPkWithAlternateGuidV7Bin16Entity> IntClusteredPkWithAlternateGuidV7Bin16Entities { get; set; }
     
     // int non-clustered primary key entities 
-    // public DbSet<GuidV4NonClusteredPkWithIntSeqClusteredEntity> GuidV4NonClusteredPkWithIntSeqClusteredEntities { get; set; }
+    public DbSet<GuidV4NonClusteredPkWithIntSeqClusteredEntity> GuidV4NonClusteredPkWithIntSeqClusteredEntities { get; set; }
     // public DbSet<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
     // public DbSet<GuidV7NonClusteredPkWithIntSeqClusteredEntity> GuidV7NonClusteredPkWithIntSeqClusteredEntities { get; set; }
     // public DbSet<GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
@@ -49,96 +49,10 @@ public class BenchmarkDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        DefineClusteredPkEntitiesModelMapping(modelBuilder);
-        DefineIntClusteredPkWithAlternateGuidModelMapping(modelBuilder);
-        
-        
         modelBuilder.ApplyAlternateKeyMapping();
+        modelBuilder.ApplyClusteredAlternateKeyMapping();
+        modelBuilder.ApplyAlternateKeyValueGeneratedOnAddMapping();
         modelBuilder.ApplyBinaryGuidMapping();
-
-
-        // OnClusteredPkEntitiesModelCreating(modelBuilder);
-        // OnNonClusteredPkWithIntSeqClusteredEntitiesModelCreating(modelBuilder);
-        // OnNonClusteredPkWithLongSeqClusteredEntitiesModelCreating(modelBuilder);
-        // OnNonClusteredPkWithDateTimeSeqClusteredEntitiesModelCreating(modelBuilder);
-        //
-        // var nonClusteredPrimaryKeyEntities = modelBuilder.Model.GetEntityTypes()
-        //     .Where(t => t.ClrType.IsAssignableToGenericType(typeof(INonClusteredPrimaryKeyEntity<>)));
-        //
-        // foreach (var nonClusteredPrimaryKeyEntity in nonClusteredPrimaryKeyEntities)
-        // {
-        //     modelBuilder.Entity(nonClusteredPrimaryKeyEntity.ClrType)
-        //         .HasKey(nameof(INonClusteredPrimaryKeyEntity<bool>.PrimaryKey))
-        //         .IsClustered(false);
-        // }
-        //
-        //
-        // var clusteredIndexEntities = modelBuilder.Model.GetEntityTypes()
-        //     .Where(t => t.ClrType.IsAssignableToGenericType(typeof(IClusteredIndexEntity<>)));
-        //
-        // foreach (var clusteredIndexEntity in clusteredIndexEntities)
-        // {
-        //     var entityTypeBuilder = modelBuilder.Entity(clusteredIndexEntity.ClrType);
-        //     entityTypeBuilder
-        //         .HasAlternateKey(nameof(IClusteredIndexEntity<bool>.AlternateKey))
-        //         .IsClustered();
-        //
-        //     var type = clusteredIndexEntity.ClrType;
-        //     var isSequentialClustered = type.IsAssignableToGenericType(
-        //                                     typeof(NonClusteredPrimaryKeyWithIntSeqClusteredEntity<>))
-        //                                 || type.IsAssignableToGenericType(
-        //                                     typeof(NonClusteredPrimaryKeyWithLongSeqClusteredEntity<>));
-        //
-        //     if (isSequentialClustered)
-        //     {
-        //         entityTypeBuilder.Property(nameof(IClusteredIndexEntity<bool>.AlternateKey))
-        //             .ValueGeneratedOnAdd();
-        //     }
-        // }
-    }
-
-
-
-    private static void DefineClusteredPkEntitiesModelMapping(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<IntClusteredPkEntity>();
-        modelBuilder.Entity<GuidV4ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV4Bin16ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV7ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV7Bin16ClusteredPkEntity>();
-    }
-
-    private static void DefineIntClusteredPkWithAlternateGuidModelMapping(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<IntClusteredPkWithAlternateGuidV4Entity>();
-        modelBuilder.Entity<IntClusteredPkWithAlternateGuidV4Bin16Entity>();
-        modelBuilder.Entity<IntClusteredPkWithAlternateGuidV7Entity>();
-        modelBuilder.Entity<IntClusteredPkWithAlternateGuidV7Bin16Entity>();
-    }
-    
-    private static void OnNonClusteredPkWithIntSeqClusteredEntitiesModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<GuidV4NonClusteredPkWithIntSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV7NonClusteredPkWithIntSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity>();
-    }
-    
-    private static void OnNonClusteredPkWithLongSeqClusteredEntitiesModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<GuidV4NonClusteredPkWithLongSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV7NonClusteredPkWithLongSeqClusteredEntity>();
-        modelBuilder.Entity<GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity>();
-    }
-    
-    private static void OnNonClusteredPkWithDateTimeSeqClusteredEntitiesModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<GuidV4NonClusteredPkWithDateTimeClusteredEntity>();
-        modelBuilder.Entity<GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity>();
-        modelBuilder.Entity<GuidV7NonClusteredPkWithDateTimeClusteredEntity>();
-        modelBuilder.Entity<GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity>();
     }
 }
 
@@ -168,6 +82,35 @@ public static class ModelBuilderExtensions
         {
             var entityBuilder = modelBuilder.Entity(entityType.ClrType);
             entityBuilder.HasAlternateKey(nameof(AlternateKeyEntity<bool,bool>.AlternateKey));
+        }
+    }
+    
+    public static void ApplyClusteredAlternateKeyMapping(this ModelBuilder modelBuilder)
+    {
+        var entityTypes = modelBuilder.Model.GetEntityTypes()
+            .Where(t => t.ClrType.IsAssignableToGenericType(typeof(IClusteredAkEntity<,>)));
+
+        foreach (var entityType in entityTypes)
+        {
+            var entityBuilder = modelBuilder.Entity(entityType.ClrType);
+            entityBuilder.HasAlternateKey(nameof(IClusteredAkEntity<bool,bool>.AlternateKey))
+                .IsClustered();
+            
+            entityBuilder.HasKey(nameof(IClusteredAkEntity<bool, bool>.PrimaryKey))
+                .IsClustered(false);
+        }
+    }
+    
+    public static void ApplyAlternateKeyValueGeneratedOnAddMapping(this ModelBuilder modelBuilder)
+    {
+        var entityTypes = modelBuilder.Model.GetEntityTypes()
+            .Where(t => t.ClrType.IsAssignableToGenericType(typeof(IAlternateKeyValueGeneratedOnAddEntity<>)));
+
+        foreach (var entityType in entityTypes)
+        {
+            var entityBuilder = modelBuilder.Entity(entityType.ClrType);
+            entityBuilder.Property(nameof(IAlternateKeyValueGeneratedOnAddEntity<bool>.AlternateKey))
+                .ValueGeneratedOnAdd();
         }
     }
 }
