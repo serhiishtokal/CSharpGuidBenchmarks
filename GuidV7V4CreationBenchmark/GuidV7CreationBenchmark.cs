@@ -1,10 +1,10 @@
 using BenchmarkDotNet.Attributes;
 
-namespace CSharpGuidBenchmarks.Benchmarks;
+namespace GuidV7V4CreationBenchmark;
 
 [MemoryDiagnoser]
 [MediumRunJob]
-public class GuidV7CreationBenchmark
+public class GuidV7V4CreationBenchmark
 {
     [Benchmark] // Marks a method as a benchmark
     public void CreateGuidV4()
