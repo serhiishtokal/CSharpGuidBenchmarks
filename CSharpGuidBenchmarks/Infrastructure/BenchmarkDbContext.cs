@@ -30,6 +30,11 @@ public class BenchmarkDbContext : DbContext
     public DbSet<GuidV7ClusteredPkEntity> GuidV7ClusteredPkEntities { get; set; }
     public DbSet<GuidV7Bin16ClusteredPkEntity> GuidV7Bin16ClusteredPkEntities { get; set; }
     
+    public DbSet<IntClusteredPkWithAlternateGuidV4Entity> IntClusteredPkWithAlternateGuidV4Entities { get; set; }
+    public DbSet<IntClusteredPkWithAlternateGuidV4Bin16Entity> IntClusteredPkWithAlternateGuidV4Bin16Entities { get; set; }
+    public DbSet<IntClusteredPkWithAlternateGuidV7Entity> IntClusteredPkWithAlternateGuidV7Entities { get; set; }
+    public DbSet<IntClusteredPkWithAlternateGuidV7Bin16Entity> IntClusteredPkWithAlternateGuidV7Bin16Entities { get; set; }
+    
     // int non-clustered primary key entities 
     public DbSet<GuidV4NonClusteredPkWithIntSeqClusteredEntity> GuidV4NonClusteredPkWithIntSeqClusteredEntities { get; set; }
     public DbSet<GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity> GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntities { get; set; }
@@ -51,16 +56,14 @@ public class BenchmarkDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<IntClusteredPkEntity>();
-        modelBuilder.Entity<GuidV4ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV4Bin16ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV7ClusteredPkEntity>();
-        modelBuilder.Entity<GuidV7Bin16ClusteredPkEntity>();
+
+        DefineClusteredPkEntitiesModelMapping(modelBuilder);
+        DefineIntClusteredPkWithAlternateGuidModelMapping(modelBuilder);
         
         
+        modelBuilder.ApplyAlternateKeyMapping();
         modelBuilder.ApplyBinaryGuidMapping();
-        
+
 
         // OnClusteredPkEntitiesModelCreating(modelBuilder);
         // OnNonClusteredPkWithIntSeqClusteredEntitiesModelCreating(modelBuilder);
@@ -104,14 +107,17 @@ public class BenchmarkDbContext : DbContext
 
 
 
-    private static void OnClusteredPkEntitiesModelCreating(ModelBuilder modelBuilder)
+    private static void DefineClusteredPkEntitiesModelMapping(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<IntClusteredPkEntity>();
         modelBuilder.Entity<GuidV4ClusteredPkEntity>();
         modelBuilder.Entity<GuidV4Bin16ClusteredPkEntity>();
         modelBuilder.Entity<GuidV7ClusteredPkEntity>();
         modelBuilder.Entity<GuidV7Bin16ClusteredPkEntity>();
+    }
 
+    private static void DefineIntClusteredPkWithAlternateGuidModelMapping(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<IntClusteredPkWithAlternateGuidV4Entity>();
         modelBuilder.Entity<IntClusteredPkWithAlternateGuidV4Bin16Entity>();
         modelBuilder.Entity<IntClusteredPkWithAlternateGuidV7Entity>();
@@ -157,6 +163,18 @@ public static class ModelBuilderExtensions
                     prop.SetColumnType("binary(16)");
                 }
             }
+        }
+    }
+    
+    public static void ApplyAlternateKeyMapping(this ModelBuilder modelBuilder)
+    {
+        var entityTypes = modelBuilder.Model.GetEntityTypes()
+            .Where(t => t.ClrType.IsAssignableToGenericType(typeof(AlternateKeyEntity<,>)));
+
+        foreach (var entityType in entityTypes)
+        {
+            var entityBuilder = modelBuilder.Entity(entityType.ClrType);
+            entityBuilder.HasAlternateKey(nameof(IClusteredIndexEntity<bool>.AlternateKey));
         }
     }
 }

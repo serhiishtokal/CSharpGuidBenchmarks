@@ -33,8 +33,4 @@
       <Compile Remove="Entities\GuidV7TestEntity.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Entities\ClusteredPrimaryKeyEntities\ClusteredPksEntities\" />
-    </ItemGroup>
-
 </Project>

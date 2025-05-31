@@ -6,6 +6,6 @@ public abstract class AlternateKeyEntity<TKey, TAlternateKey> : Entity<TKey> whe
     {
         AlternateKey = alternateKey;
     }
-
+    
     public virtual TAlternateKey AlternateKey { get; }
 }
