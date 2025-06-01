@@ -1,6 +1,5 @@
-using CSharpGuidBenchmarks.Entities;
-using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities;
-using CSharpGuidBenchmarks.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.LongEntities;
+using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.LongEntities;
+using CSharpGuidBenchmarks.Domain.Interfaces;
 using CSharpGuidBenchmarks.Extensions;
 
 namespace Tests;

@@ -1,4 +1,4 @@
-﻿using CSharpGuidBenchmarks.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
+﻿using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 using CSharpGuidBenchmarks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
