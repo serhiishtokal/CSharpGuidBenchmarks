@@ -17,6 +17,8 @@
 
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+      <PackageReference Include="Bogus" Version="35.6.3" />
+      <PackageReference Include="Mawosoft.Extensions.BenchmarkDotNet" Version="0.2.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
         <PrivateAssets>all</PrivateAssets>
@@ -26,11 +28,18 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.4" />
       <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.4" />
+      <PackageReference Include="Respawn" Version="6.2.1" />
       <PackageReference Include="Scrutor" Version="6.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Entities\GuidV7TestEntity.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

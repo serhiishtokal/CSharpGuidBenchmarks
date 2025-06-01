@@ -10,10 +10,10 @@ public class ClusteredPkEntityTests
     public async Task Test1()
     {
         const string customPayload = "custompayloadstring";
-        await DbStaticServices.ResetDbAsync();
         var dbContextFactory = new BenchmarkDbDesignTimeContextFactory();
         {
             await using var context = dbContextFactory.CreateDbContext([]);
+            await context.ResetDbAsync();
             var guidV7Bin16ClusteredPkEntity = GuidV7Bin16ClusteredPkEntity.Create(customPayload);
             context.Add(guidV7Bin16ClusteredPkEntity);
             await context.SaveChangesAsync();
