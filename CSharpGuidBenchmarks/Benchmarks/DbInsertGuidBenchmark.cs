@@ -19,46 +19,46 @@ public class DbInsertGuidBenchmark
     private const int SetupActionChunkSize = 100_000;
     private const int RecordsPerBulkInsert = 10;
     
-    [ParamsSource(nameof(TestEntityTypes))]
+    [ParamsSource(nameof(EntityTypes))]
     public ParamWrapper<Type> EntityType = null!;
     
-    [ParamsSource(nameof(TestInitialDbRecordsNumberStates))]
+    [ParamsSource(nameof(InitialDbRecordsNumberStates))]
     public int InitialDbRecordsNumberState;
     
-    private static IEnumerable<Type> EntityTypes
+    public static IEnumerable<ParamWrapper<Type>> EntityTypes
     {
         get
         {
-            yield return typeof(GuidV4Bin16ClusteredPkEntity);
-            yield return typeof(GuidV4ClusteredPkEntity);
-            yield return typeof(GuidV7Bin16ClusteredPkEntity);
-            yield return typeof(GuidV7ClusteredPkEntity);
+            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16ClusteredPkEntity), nameof(GuidV4Bin16ClusteredPkEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV4ClusteredPkEntity), nameof(GuidV4ClusteredPkEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7Bin16ClusteredPkEntity), nameof(GuidV7Bin16ClusteredPkEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7ClusteredPkEntity), nameof(GuidV7ClusteredPkEntity));
             
-            yield return typeof(IntClusteredPkEntity);
+            yield return new ParamWrapper<Type>(typeof(IntClusteredPkEntity), nameof(IntClusteredPkEntity));
             
-            yield return typeof(IntClusteredPkWithAlternateGuidV4Bin16Entity);
-            yield return typeof(IntClusteredPkWithAlternateGuidV4Entity);
-            yield return typeof(IntClusteredPkWithAlternateGuidV7Bin16Entity);
-            yield return typeof(IntClusteredPkWithAlternateGuidV7Entity);
-
-            yield return typeof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity);
-            yield return typeof(GuidV4NonClusteredPkWithDateTimeClusteredEntity);
-            yield return typeof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity);
-            yield return typeof(GuidV7NonClusteredPkWithDateTimeClusteredEntity);
+            yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV4Bin16Entity), nameof(IntClusteredPkWithAlternateGuidV4Bin16Entity));
+            yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV4Entity), nameof(IntClusteredPkWithAlternateGuidV4Entity));
+            yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV7Bin16Entity), nameof(IntClusteredPkWithAlternateGuidV7Bin16Entity));
+            yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV7Entity), nameof(IntClusteredPkWithAlternateGuidV7Entity));
             
-            yield return typeof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity);
-            yield return typeof(GuidV4NonClusteredPkWithIntSeqClusteredEntity);
-            yield return typeof(GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity);
-            yield return typeof(GuidV7NonClusteredPkWithIntSeqClusteredEntity);
+            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4NonClusteredPkWithDateTimeClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7NonClusteredPkWithDateTimeClusteredEntity));
             
-            yield return typeof(GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity);
-            yield return typeof(GuidV4NonClusteredPkWithLongSeqClusteredEntity);
-            yield return typeof(GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity);
-            yield return typeof(GuidV7NonClusteredPkWithLongSeqClusteredEntity);
+            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV4NonClusteredPkWithIntSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithIntSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV7NonClusteredPkWithIntSeqClusteredEntity));
+            
+            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithLongSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV4NonClusteredPkWithLongSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity));
+            yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV7NonClusteredPkWithLongSeqClusteredEntity));
         }
     }
 
-    private static IEnumerable<int> InitialDbRecordsNumberStates
+    public static IEnumerable<int> InitialDbRecordsNumberStates
     {
         get
         {
@@ -72,29 +72,29 @@ public class DbInsertGuidBenchmark
         }
     }
     
-    public static IEnumerable<int> TestInitialDbRecordsNumberStates
-    {
-        get
-        {
-            yield return 20;
-            yield return 50;
-            // yield return 100;
-            // yield return 300;
-            // yield return 500;
-            // yield return 1000;
-        }
-    }
+    // public static IEnumerable<int> TestInitialDbRecordsNumberStates
+    // {
+    //     get
+    //     {
+    //         yield return 20;
+    //         yield return 50;
+    //         // yield return 100;
+    //         // yield return 300;
+    //         // yield return 500;
+    //         // yield return 1000;
+    //     }
+    // }
     
-    public static IEnumerable<ParamWrapper<Type>> TestEntityTypes
-    {
-        get
-        {
-            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16ClusteredPkEntity), nameof(GuidV4Bin16ClusteredPkEntity));
-            yield return new ParamWrapper<Type>(typeof(GuidV4ClusteredPkEntity), nameof(GuidV4ClusteredPkEntity));
-            // yield return typeof(GuidV7Bin16ClusteredPkEntity);
-            // yield return typeof(GuidV7ClusteredPkEntity);
-        }
-    }
+    // public static IEnumerable<ParamWrapper<Type>> TestEntityTypes
+    // {
+    //     get
+    //     {
+    //         yield return new ParamWrapper<Type>(typeof(GuidV4Bin16ClusteredPkEntity), nameof(GuidV4Bin16ClusteredPkEntity));
+    //         yield return new ParamWrapper<Type>(typeof(GuidV4ClusteredPkEntity), nameof(GuidV4ClusteredPkEntity));
+    //         // yield return typeof(GuidV7Bin16ClusteredPkEntity);
+    //         // yield return typeof(GuidV7ClusteredPkEntity);
+    //     }
+    // }
 
     protected IDbInsertGuidBenchmarkService _dbGuidBenchmarkService = null!;
 
