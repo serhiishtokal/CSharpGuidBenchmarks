@@ -2,7 +2,6 @@ using BenchmarkDotNet.Attributes;
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities;
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.IntClusteredPkWithGuidAlternate;
-using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities;
 using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities;
 using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.LongEntities;
 using CSharpGuidBenchmarks.Services.Abstractions;
@@ -17,13 +16,38 @@ namespace CSharpGuidBenchmarks.Benchmarks;
 public class DbInsertGuidBenchmark
 {
     private const int SetupActionChunkSize = 100_000;
-    private const int RecordsPerBulkInsert = 10;
+    private const int RecordsPerBulkInsert = 5_000;
     
     [ParamsSource(nameof(EntityTypes))]
     public ParamWrapper<Type> EntityType = null!;
     
-    [ParamsSource(nameof(InitialDbRecordsNumberStates))]
+    [ParamsSource(nameof(GenerateDbRecordStates))]
     public int InitialDbRecordsNumberState;
+    
+    public static IEnumerable<int> GenerateDbRecordStates
+    {
+        get
+        {
+            {
+                for (int init = 3_000_000; init <= 16_000_000;)
+                {
+                    yield return init;
+                    int increment;
+                    switch (init)
+                    {
+                        case < 5_000_000:
+                            increment = 500_000;
+                            break;
+                        default:
+                            increment = 1_000_000;
+                            break;
+                    }
+        
+                    init += increment;
+                }
+            }
+        }
+    }
     
     public static IEnumerable<ParamWrapper<Type>> EntityTypes
     {
@@ -41,10 +65,10 @@ public class DbInsertGuidBenchmark
             yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV7Bin16Entity), nameof(IntClusteredPkWithAlternateGuidV7Bin16Entity));
             yield return new ParamWrapper<Type>(typeof(IntClusteredPkWithAlternateGuidV7Entity), nameof(IntClusteredPkWithAlternateGuidV7Entity));
             
-            yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity));
-            yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4NonClusteredPkWithDateTimeClusteredEntity));
-            yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity));
-            yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7NonClusteredPkWithDateTimeClusteredEntity));
+            // yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity));
+            // yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV4NonClusteredPkWithDateTimeClusteredEntity));
+            // yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity));
+            // yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithDateTimeClusteredEntity), nameof(GuidV7NonClusteredPkWithDateTimeClusteredEntity));
             
             yield return new ParamWrapper<Type>(typeof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity));
             yield return new ParamWrapper<Type>(typeof(GuidV4NonClusteredPkWithIntSeqClusteredEntity), nameof(GuidV4NonClusteredPkWithIntSeqClusteredEntity));
@@ -57,45 +81,7 @@ public class DbInsertGuidBenchmark
             yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV7NonClusteredPkWithLongSeqClusteredEntity));
         }
     }
-
-    public static IEnumerable<int> InitialDbRecordsNumberStates
-    {
-        get
-        {
-            yield return 10_000;
-            yield return 50_000;
-            yield return 100_000;
-            yield return 500_000;
-            yield return 1_000_000;
-            yield return 5_000_000;
-            yield return 10_000_000;
-        }
-    }
     
-    // public static IEnumerable<int> TestInitialDbRecordsNumberStates
-    // {
-    //     get
-    //     {
-    //         yield return 20;
-    //         yield return 50;
-    //         // yield return 100;
-    //         // yield return 300;
-    //         // yield return 500;
-    //         // yield return 1000;
-    //     }
-    // }
-    
-    // public static IEnumerable<ParamWrapper<Type>> TestEntityTypes
-    // {
-    //     get
-    //     {
-    //         yield return new ParamWrapper<Type>(typeof(GuidV4Bin16ClusteredPkEntity), nameof(GuidV4Bin16ClusteredPkEntity));
-    //         yield return new ParamWrapper<Type>(typeof(GuidV4ClusteredPkEntity), nameof(GuidV4ClusteredPkEntity));
-    //         // yield return typeof(GuidV7Bin16ClusteredPkEntity);
-    //         // yield return typeof(GuidV7ClusteredPkEntity);
-    //     }
-    // }
-
     protected IDbInsertGuidBenchmarkService _dbGuidBenchmarkService = null!;
 
     [GlobalSetup]
@@ -104,13 +90,19 @@ public class DbInsertGuidBenchmark
         var configuration = new DbInsertGuidBenchmarkServiceConfiguration(
             InitialDbRecordsNumberState,
             SetupActionChunkSize,
-            RecordsPerBulkInsert,
-            EntityType.Value);
+            RecordsPerBulkInsert);
         
         var serviceProvider = ServiceProviderFactory.CreateForDbInsertGuidBenchmark(configuration);
-        var type = typeof(IDbInsertGuidBenchmarkService<>).MakeGenericType(configuration.EntityType);
+        var type = typeof(IDbInsertGuidBenchmarkService<>).MakeGenericType(EntityType.Value);
         _dbGuidBenchmarkService = (IDbInsertGuidBenchmarkService) serviceProvider.GetRequiredService(type);
         await _dbGuidBenchmarkService.GlobalSetup();
+    }
+    
+    [GlobalCleanup]
+    public async Task GlobalCleanup()
+    {
+        //await _dbGuidBenchmarkService.GlobalCleanup();
+        _dbGuidBenchmarkService = null!;
     }
     
     [IterationSetup]
@@ -119,23 +111,30 @@ public class DbInsertGuidBenchmark
         _dbGuidBenchmarkService.IterationSetup().GetAwaiter().GetResult();
     }
     
-    [IterationCleanup]
-    public void IterationCleanup()
-    {
-        _dbGuidBenchmarkService.IterationCleanup().GetAwaiter().GetResult();
-    }
+    // [IterationCleanup]
+    // public void IterationCleanup()
+    // {
+    //     _dbGuidBenchmarkService.IterationCleanup().GetAwaiter().GetResult();
+    // }
     
     [Benchmark]
-    [IterationCount(10)]
+    [IterationCount(20)]
     public async Task SingleInsertLatencyBenchmark()
     {
         await _dbGuidBenchmarkService.SingleInsertLatencyBenchmark();
     }
     
     [Benchmark]
-    [IterationCount(10)]
+    [IterationCount(5)]
     public async Task BulkInsertLatencyBenchmark()
     {
         await _dbGuidBenchmarkService.BulkInsertLatencyBenchmark();
+    }
+    
+    [Benchmark]
+    [IterationCount(5)]
+    public async Task BulkInsertOneByOneLatencyBenchmark()
+    {
+        await _dbGuidBenchmarkService.BulkInsertOneByOneLatencyBenchmark();
     }
 }

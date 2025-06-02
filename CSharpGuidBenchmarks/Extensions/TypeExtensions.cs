@@ -23,4 +23,35 @@ public static class TypeExtensions
         return givenType.BaseType != null
                && givenType.BaseType.IsAssignableToGenericType(genericTypeDefinition);
     }
+    
+    /// <summary>
+    /// Returns the friendly short name of a type, including generic arguments (e.g. List<String>).
+    /// </summary>
+    public static string GetShortName(this Type type)
+    {
+        if (type.IsGenericType)
+        {
+            // Get the base name up to the backtick (e.g. “Dictionary`2” → “Dictionary”)
+            var baseName = type.Name;
+            var tickIndex = baseName.IndexOf('`');
+            if (tickIndex > 0)
+                baseName = baseName.Substring(0, tickIndex);
+
+            // Recursively get short names of generic arguments
+            var args = type.GetGenericArguments()
+                .Select(t => t.GetShortName())
+                .ToArray();
+
+            return $"{baseName}<{string.Join(", ", args)}>";
+        }
+        else if (type.IsArray)
+        {
+            // Handle array types (e.g. Int32[] → Int32[])
+            return $"{type.GetElementType()!.GetShortName()}[]";
+        }
+        else
+        {
+            return type.Name;
+        }
+    }
 }

@@ -6,7 +6,9 @@ public interface IDbInsertGuidBenchmarkService
     Task IterationSetup();
     Task SingleInsertLatencyBenchmark();
     Task BulkInsertLatencyBenchmark();
-    Task IterationCleanup();
+    //Task IterationCleanup();
+    //Task GlobalCleanup();
+    Task BulkInsertOneByOneLatencyBenchmark();
 }
 
 public interface IDbInsertGuidBenchmarkService<TEntity>: IDbInsertGuidBenchmarkService where TEntity : class;

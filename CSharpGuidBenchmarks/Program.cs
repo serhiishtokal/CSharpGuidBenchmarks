@@ -12,4 +12,7 @@ manualConfig.SummaryStyle = manualConfig.SummaryStyle.WithMaxParameterColumnWidt
 await DbStaticServices.ResetDbAsync();
 
 BenchmarkRunner.Run<DbInsertGuidBenchmark>(manualConfig);
+//BenchmarkRunner.Run<DbInsertGuidBenchmark>(new DebugInProcessConfig());
+
+
 Console.ReadLine();
