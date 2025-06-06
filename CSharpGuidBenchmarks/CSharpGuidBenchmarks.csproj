@@ -43,4 +43,8 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CSharpGuidBenchmarks.Domain\CSharpGuidBenchmarks.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
