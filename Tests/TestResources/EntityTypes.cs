@@ -1,7 +1,6 @@
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities;
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 using CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.IntClusteredPkWithGuidAlternate;
-using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.DateTimeSeqClusteredEntities;
 using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities;
 using CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.LongEntities;
 
@@ -22,11 +21,6 @@ public class EntityConstants
         typeof(IntClusteredPkWithAlternateGuidV4Entity),
         typeof(IntClusteredPkWithAlternateGuidV7Bin16Entity),
         typeof(IntClusteredPkWithAlternateGuidV7Entity),
-        
-        typeof(GuidV4Bin16NonClusteredPkWithDateTimeClusteredEntity),
-        typeof(GuidV4NonClusteredPkWithDateTimeClusteredEntity),
-        typeof(GuidV7Bin16NonClusteredPkWithDateTimeClusteredEntity),
-        typeof(GuidV7NonClusteredPkWithDateTimeClusteredEntity),
         
         typeof(GuidV4Bin16NonClusteredPkWithIntSeqClusteredEntity),
         typeof(GuidV4NonClusteredPkWithIntSeqClusteredEntity),

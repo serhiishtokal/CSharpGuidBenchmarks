@@ -5,7 +5,7 @@ namespace CSharpGuidBenchmarks.ServicesProviders;
 public class CustomConfigurationProvider
 {
     public static IConfigurationRoot Configuration => _configuration.Value;
-    private static Lazy<IConfigurationRoot> _configuration = new(GetConfiguration);
+    private static readonly Lazy<IConfigurationRoot> _configuration = new(GetConfiguration);
 
     private static IConfigurationRoot GetConfiguration()
     {

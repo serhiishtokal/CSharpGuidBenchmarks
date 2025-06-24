@@ -4,7 +4,7 @@ using CSharpGuidBenchmarks.Domain.Interfaces;
 
 namespace CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 
-public class GuidV4Bin16ClusteredPkEntity : Entity<Guid>
+public class GuidV4Bin16ClusteredPkEntity : Entity<Guid>, ICreatable<GuidV4Bin16ClusteredPkEntity>
 {
     private GuidV4Bin16ClusteredPkEntity(Guid primaryKey, string payload) : base(primaryKey, payload)
     {

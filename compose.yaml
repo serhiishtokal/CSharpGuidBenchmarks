@@ -37,5 +37,29 @@
       timeout: 5s
       retries: 10
       
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      # replace these with your own values
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    deploy: # Resource limits section
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+          # --- INCREASE LATER --- (Example: 4 cores, 8GB RAM)
+          # cpus: '4.0'
+          # memory: 8G
+          # --- MAX --- (Example: 8 cores, 32GB RAM)
+          # cpus: '8.0'
+          # memory: 32G
 volumes:
   sql_data:
+  postgres-data:

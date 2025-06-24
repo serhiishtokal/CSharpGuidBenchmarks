@@ -3,7 +3,7 @@ using CSharpGuidBenchmarks.Domain.Interfaces;
 
 namespace CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.IntClusteredPkWithGuidAlternate;
 
-public class IntClusteredPkWithAlternateGuidV7Entity : AlternateKeyEntity<int, Guid>
+public class IntClusteredPkWithAlternateGuidV7Entity : AlternateKeyEntity<int, Guid>, ICreatable<IntClusteredPkWithAlternateGuidV7Entity>
 {
     public IntClusteredPkWithAlternateGuidV7Entity(int primaryKey, string payload, Guid alternateKey) : base(primaryKey, payload, alternateKey)
     {

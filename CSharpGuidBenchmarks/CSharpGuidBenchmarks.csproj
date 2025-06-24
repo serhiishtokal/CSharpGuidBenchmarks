@@ -26,10 +26,11 @@
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.4" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.4" />
       <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.4" />
-      <PackageReference Include="Respawn" Version="6.2.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
       <PackageReference Include="Scrutor" Version="6.0.1" />
     </ItemGroup>
 
@@ -44,7 +45,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CSharpGuidBenchmarks.Domain\CSharpGuidBenchmarks.Domain.csproj" />
+      <ProjectReference Include="..\CSharpGuidBenchmarks.Application\CSharpGuidBenchmarks.Application.csproj" />
+      <ProjectReference Include="..\CSharpGuidBenchmarks.Infrastructure\CSharpGuidBenchmarks.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

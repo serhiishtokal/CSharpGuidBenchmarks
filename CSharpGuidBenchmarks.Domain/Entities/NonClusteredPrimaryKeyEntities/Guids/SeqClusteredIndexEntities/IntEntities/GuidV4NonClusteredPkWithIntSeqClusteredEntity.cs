@@ -1,14 +1,17 @@
 using CSharpGuidBenchmarks.Domain.Abstractions;
 using CSharpGuidBenchmarks.Domain.Interfaces;
 
-namespace CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.IntEntities;
+namespace CSharpGuidBenchmarks.Domain.Entities.NonClusteredPrimaryKeyEntities.Guids.SeqClusteredIndexEntities.
+    IntEntities;
 
-public class GuidV4NonClusteredPkWithIntSeqClusteredEntity : AlternateKeyEntity<Guid, int>, IClusteredAkEntity<Guid, int>, IAlternateKeyValueGeneratedOnAddEntity<int>
+public class GuidV4NonClusteredPkWithIntSeqClusteredEntity : AlternateKeyEntity<Guid, int>,
+    IClusteredAkEntity<Guid, int>, IAlternateKeyValueGeneratedOnAddEntity<int>, ICreatable<GuidV4NonClusteredPkWithIntSeqClusteredEntity>
 {
-    public GuidV4NonClusteredPkWithIntSeqClusteredEntity(Guid primaryKey, string payload, int alternateKey) : base(primaryKey, payload, alternateKey)
+    public GuidV4NonClusteredPkWithIntSeqClusteredEntity(Guid primaryKey, string payload, int alternateKey) : base(
+        primaryKey, payload, alternateKey)
     {
     }
-    
+
     public static GuidV4NonClusteredPkWithIntSeqClusteredEntity Create(string payload)
     {
         return new GuidV4NonClusteredPkWithIntSeqClusteredEntity(Guid.NewGuid(), payload, 0);
