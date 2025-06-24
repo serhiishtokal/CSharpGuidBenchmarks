@@ -17,7 +17,9 @@ namespace CSharpGuidBenchmarks.Benchmarks;
 public class DbInsertGuidBenchmark
 {
     private const int SetupActionChunkSize = 100_000;
-    private const int RecordsPerBulkInsert = 5_000;
+
+    [Params(10_000)]
+    public int RecordsPerBulkInsert = 1;
     
     [ParamsSource(nameof(DbTypes))]
     public ParamWrapper<DbTypeEnum> DbType = null!;
@@ -31,23 +33,21 @@ public class DbInsertGuidBenchmark
     {
         get
         {
+            for (int init = 3_000_000; init <= 16_000_000;)
             {
-                for (int init = 3_000_000; init <= 16_000_000;)
+                yield return init;
+                int increment;
+                switch (init)
                 {
-                    yield return init;
-                    int increment;
-                    switch (init)
-                    {
-                        case < 5_000_000:
-                            increment = 500_000;
-                            break;
-                        default:
-                            increment = 1_000_000;
-                            break;
-                    }
-            
-                    init += increment;
+                    case < 5_000_000:
+                        increment = 500_000;
+                        break;
+                    default:
+                        increment = 1_000_000;
+                        break;
                 }
+            
+                init += increment;
             }
         }
     }
@@ -85,23 +85,21 @@ public class DbInsertGuidBenchmark
             yield return new ParamWrapper<Type>(typeof(GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV7Bin16NonClusteredPkWithLongSeqClusteredEntity));
             yield return new ParamWrapper<Type>(typeof(GuidV7NonClusteredPkWithLongSeqClusteredEntity), nameof(GuidV7NonClusteredPkWithLongSeqClusteredEntity));
         }
-    }
-    
-    
-    protected IDbGuidInsertBenchmarkIterationService InsertBenchmarkIterationService = null!;
-    protected static Type PrevEntityType = null!;
+    }    protected IDbGuidInsertBenchmarkIterationService InsertBenchmarkIterationService = null!;
 
     [GlobalSetup]
-    public async Task GlobalSetup()
+    public void GlobalSetup()
     {
-        var canSoftDbRespawn = EntityType.Value == PrevEntityType;
+        var prevEntityType = BenchmarkStateHelper.GetPreviousEntityType();
+        var canHardDbRespawn = EntityType.Value != prevEntityType;
+        
         var configuration = new DbGuidBenchmarkGlobalSetupConfiguration(
             DbType.Value,
             EntityType.Value,
             InitialDbRecordsNumberState,
             SetupActionChunkSize,
             RecordsPerBulkInsert,
-            canSoftDbRespawn);
+            canHardDbRespawn);
         
         var serviceProvider = ServiceProviderFactory.CreateForDbInsertGuidBenchmark(configuration);
         InsertBenchmarkIterationService = serviceProvider.GetRequiredService<IDbGuidInsertBenchmarkIterationService>();
@@ -110,15 +108,13 @@ public class DbInsertGuidBenchmark
             throw new InvalidOperationException("Benchmark iteration service is not registered in the service provider.");
         }
         
-        await InsertBenchmarkIterationService.GlobalSetup();
+        InsertBenchmarkIterationService.GlobalSetup().GetAwaiter().GetResult();
     }
-    
-    [GlobalCleanup]
-    public async Task GlobalCleanup()
+      [GlobalCleanup]
+    public void GlobalCleanup()
     {
-        //await _dbGuidBenchmarkService.GlobalCleanup();
         InsertBenchmarkIterationService = null!;
-        PrevEntityType = EntityType.Value;
+        BenchmarkStateHelper.SaveCurrentEntityType(EntityType.Value);
     }
     
     [IterationSetup]
@@ -139,7 +135,9 @@ public class DbInsertGuidBenchmark
         InsertBenchmarkIterationService.SingleInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
     }
 
-    [IterationCleanup(Targets = [nameof(BulkInsertLatencyBenchmark), nameof(BulkInsertOneByOneLatencyBenchmark)])]
+    [IterationCleanup(Targets = [nameof(BulkInsertLatencyBenchmark)
+        , nameof(BulkInsertOneByOneLatencyBenchmark)
+    ])]
     public void BulkInsertLatencyBenchmarkIterationCleanup()
     {
         InsertBenchmarkIterationService.BulkInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
@@ -153,7 +151,7 @@ public class DbInsertGuidBenchmark
     }
     
     [Benchmark]
-    [IterationCount(5)]
+    [IterationCount(10)]
     public async Task BulkInsertLatencyBenchmark()
     {
         await InsertBenchmarkIterationService.BulkInsertLatencyBenchmark();

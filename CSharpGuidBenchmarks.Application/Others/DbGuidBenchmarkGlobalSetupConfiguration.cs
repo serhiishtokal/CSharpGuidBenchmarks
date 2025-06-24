@@ -8,7 +8,7 @@ public record DbGuidBenchmarkGlobalSetupConfiguration(
     int InitialDbRecordsNumberState,
     int SetupActionChunkSize,
     int RecordsPerBulkInsert,
-    bool CanSoftDbRespawn)
+    bool CanHardDbRespawn)
 {
     public DbGuidBenchmarkIterationServiceConfiguration ToIterationServiceConfiguration()
     {
@@ -16,7 +16,7 @@ public record DbGuidBenchmarkGlobalSetupConfiguration(
             InitialDbRecordsNumberState,
             SetupActionChunkSize,
             RecordsPerBulkInsert,
-            CanSoftDbRespawn);
+            CanHardDbRespawn);
     }
 }
 
@@ -24,4 +24,4 @@ public record DbGuidBenchmarkIterationServiceConfiguration(
     int InitialDbRecordsNumberState,
     int SetupActionChunkSize,
     int RecordsPerBulkInsert,
-    bool CanSoftDbRespawn);
+    bool CanHardDbRespawn);

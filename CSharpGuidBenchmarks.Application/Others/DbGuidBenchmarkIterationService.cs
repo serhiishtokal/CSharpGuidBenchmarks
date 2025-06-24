@@ -34,16 +34,16 @@ public class DbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGui
     public async Task GlobalSetup()
     {
         await LogLine($"GlobalSetup: {_configuration}");
-        if (_configuration.CanSoftDbRespawn)
+        if (_configuration.CanHardDbRespawn)
+        {
+            await LogLine("GlobalSetup: Starting hard respawn...");
+            await _dbRespawner.HardRespawnAsync();
+        }
+        else
         {
             await LogLine("GlobalSetup: Starting soft respawn...");
             await _dbRespawner.SoftRespawnAsync(_entityType);
             await LogLine($"{_entityType.ShortDisplayName()} ignored.");
-        }
-        else
-        {
-            await LogLine("GlobalSetup: Starting hard respawn...");
-            await _dbRespawner.HardRespawnAsync();
         }
 
         await LogLine($"GlobalSetup: Database respawned.");
@@ -179,12 +179,13 @@ public class DbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGui
         await LogLine($"Deleted {totalRecordsToDelete} records");
     }
 
-    private async Task LogLine(string message)
+    private Task LogLine(string message)
     {
         var entityTypeString = _entityType.ShortDisplayName();
         var dbContextTypeString = typeof(TDbContext).ShortDisplayName();
         var dbRecordsState = _configuration.InitialDbRecordsNumberState;
         _logger.LogInformation("[{dbContextTypeString}][{entityTypeString} db state {dbRecordsState}] {message}",dbContextTypeString, entityTypeString, dbRecordsState, message);
+        return Task.CompletedTask;
     }
 
     private async Task<int> GetCurrentRecordsCountAsync()

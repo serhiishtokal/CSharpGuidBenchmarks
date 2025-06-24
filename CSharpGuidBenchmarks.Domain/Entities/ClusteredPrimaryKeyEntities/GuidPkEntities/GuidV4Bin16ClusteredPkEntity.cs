@@ -1,6 +1,5 @@
 using CSharpGuidBenchmarks.Domain.Abstractions;
 using CSharpGuidBenchmarks.Domain.Attributes;
-using CSharpGuidBenchmarks.Domain.Interfaces;
 
 namespace CSharpGuidBenchmarks.Domain.Entities.ClusteredPrimaryKeyEntities.GuidPkEntities;
 
