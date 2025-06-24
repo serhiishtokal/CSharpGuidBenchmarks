@@ -54,25 +54,6 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
         throw new NotImplementedException();
     }
 
-    // public async Task GlobalCleanup()
-    // {
-    //     await LogLine($"GlobalCleanup: {_configuration}");
-    //     
-    //     await using var benchmarkDbContext = await _dbContextFactory.CreateDbContextAsync();
-    //     var countOfRecords = await benchmarkDbContext.Set<TEntity>().CountAsync();
-    //     if (countOfRecords <= 0)
-    //     {
-    //         await LogLine("GlobalCleanup: No records to delete.");
-    //     }
-    //     else
-    //     {
-    //         await LogLine($"GlobalCleanup: Deleting {countOfRecords} {_entityType.GetShortName()} entity records");
-    //         await BulkDeleteRecordsSetupAsync(benchmarkDbContext, countOfRecords);
-    //     }
-    //     
-    //     await LogLine("GlobalSetup: Database ready.");
-    // }
-
     public async Task IterationSetup()
     {
         await LogLine("IterationSetup: EnsureExactRecordCountSetupAsync...");
@@ -87,13 +68,14 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
         throw new NotImplementedException();
     }
     
-    public async Task SingleInsertLatencyBenchmarkIterationSetup()
+    public async Task SingleInsertLatencyBenchmarkIterationCleanup()
     {
-        await LogLine("IterationSetup: EnsureExactRecordCountSetupAsync...");
-        await EnsureExactRecordCountSetupAsync(_configuration.InitialDbRecordsNumberState);
-        await LogLine("IterationSetup: Database ready.");
-
-        _iterationEntities = GenerateEntities(_configuration.RecordsPerBulkInsert).ToArray();
+        await LogLine("SingleInsertLatencyBenchmark: Inserted single record.");
+    }
+    
+    public async Task BulkInsertLatencyBenchmarkIterationCleanup()
+    {
+        await LogLine($"BulkInsertLatencyBenchmark: Inserted {_iterationEntities.Length} records.");
     }
     
     
@@ -102,8 +84,6 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
         await using var context = await _dbContextFactory.CreateDbContextAsync();
         await context.Set<TEntity>().AddAsync(_iterationEntities[0]);
         await context.SaveChangesAsync();
-        // TODO: remove logs from benchmarks. Move it to setup and cleanup methods. 
-        await LogLine("SingleInsertLatencyBenchmark: Inserted single record.");
     }
 
     public async Task BulkInsertLatencyBenchmark()
@@ -111,8 +91,6 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
         await using var context = await _dbContextFactory.CreateDbContextAsync();
         await context.Set<TEntity>().AddRangeAsync(_iterationEntities);
         await context.SaveChangesAsync();
-        // TODO: remove logs from benchmarks. Move it to setup and cleanup methods. 
-        await LogLine($"BulkInsertLatencyBenchmark: Inserted {_iterationEntities.Length} records.");
     }
 
     public async Task BulkInsertOneByOneLatencyBenchmark()
@@ -124,8 +102,6 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
             await context.Set<TEntity>().AddAsync(entity);
             await context.SaveChangesAsync();
         }
-        // TODO: remove logs from benchmarks. Move it to setup and cleanup methods. 
-        await LogLine($"BulkInsertLatencyBenchmark: Inserted {_iterationEntities.Length} records.");
     }
 
     private IEnumerable<TEntity> GenerateEntities(int count)

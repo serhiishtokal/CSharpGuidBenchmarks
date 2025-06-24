@@ -133,6 +133,18 @@ public class DbInsertGuidBenchmark
     {
         //_benchmarkIterationService.IterationCleanup().GetAwaiter().GetResult();
     }
+
+    [IterationCleanup(Targets = [nameof(SingleInsertLatencyBenchmark)])]
+    public void SingleInsertLatencyBenchmarkIterationCleanup()
+    {
+        _benchmarkIterationService.SingleInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
+    }
+
+    [IterationCleanup(Targets = [nameof(BulkInsertLatencyBenchmark), nameof(BulkInsertOneByOneLatencyBenchmark)])]
+    public void BulkInsertLatencyBenchmarkIterationCleanup()
+    {
+        _benchmarkIterationService.BulkInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
+    }
     
     [Benchmark]
     [IterationCount(20)]

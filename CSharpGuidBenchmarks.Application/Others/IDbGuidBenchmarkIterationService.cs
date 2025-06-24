@@ -12,6 +12,8 @@ public interface IDbGuidBenchmarkIterationService
     Task SingleInsertLatencyBenchmark();
     Task BulkInsertLatencyBenchmark();
     Task BulkInsertOneByOneLatencyBenchmark();
+    Task SingleInsertLatencyBenchmarkIterationCleanup();
+    Task BulkInsertLatencyBenchmarkIterationCleanup();
 }
 
 public interface IDbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBenchmarkIterationService
