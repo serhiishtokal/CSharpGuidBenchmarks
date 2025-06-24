@@ -48,14 +48,14 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddDbGuidBenchmarkIterationService(this IServiceCollection services)
     {
-        services.AddSingleton(typeof(IDbGuidBenchmarkIterationService<,>), typeof(DbGuidBenchmarkIterationService<,>));
+        services.AddSingleton(typeof(IDbGuidInsertBenchmarkIterationService<,>), typeof(DbGuidInsertBenchmarkIterationService<,>));
         return services;
     }
 
     public static IServiceCollection AddDbGuidBenchmarkIterationService(this IServiceCollection services, DbTypeEnum dbType, Type entityType)
     {
-        var implementationType = typeof(DbGuidBenchmarkIterationService<,>).MakeGenericType(entityType, dbType.GetDbContextType());
-        services.AddSingleton(typeof(IDbGuidBenchmarkIterationService), implementationType);
+        var implementationType = typeof(DbGuidInsertBenchmarkIterationService<,>).MakeGenericType(entityType, dbType.GetDbContextType());
+        services.AddSingleton(typeof(IDbGuidInsertBenchmarkIterationService), implementationType);
         
         return services;
     }

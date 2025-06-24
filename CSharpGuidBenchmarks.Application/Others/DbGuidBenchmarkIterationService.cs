@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CSharpGuidBenchmarks.Application.Others;
 
-public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBenchmarkIterationService<TEntity, TDbContext>
+public class DbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGuidInsertBenchmarkIterationService<TEntity, TDbContext>
     where TEntity : class, ICreatable<TEntity>
     where TDbContext : DbContext
 {
@@ -18,11 +18,11 @@ public class DbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBench
     private TEntity[] _iterationEntities;
     private readonly Type _entityType = typeof(TEntity);
     private readonly Faker<TEntity> _faker;
-    private readonly ILogger<DbGuidBenchmarkIterationService<TEntity, TDbContext>> _logger;
+    private readonly ILogger<DbGuidInsertBenchmarkIterationService<TEntity, TDbContext>> _logger;
 
-    public DbGuidBenchmarkIterationService(IDbContextFactory<TDbContext> dbContextFactory, 
+    public DbGuidInsertBenchmarkIterationService(IDbContextFactory<TDbContext> dbContextFactory, 
         IEntityFakerProvider<TEntity> fakerProvider,
-        DbGuidBenchmarkIterationServiceConfiguration configuration, IDbRespawner dbRespawner, ILogger<DbGuidBenchmarkIterationService<TEntity, TDbContext>> logger)
+        DbGuidBenchmarkIterationServiceConfiguration configuration, IDbRespawner dbRespawner, ILogger<DbGuidInsertBenchmarkIterationService<TEntity, TDbContext>> logger)
     {
         _dbContextFactory = dbContextFactory;
         _configuration = configuration;

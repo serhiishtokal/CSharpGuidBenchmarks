@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSharpGuidBenchmarks.Application.Others;
 
-public interface IDbGuidBenchmarkIterationService
+public interface IDbGuidInsertBenchmarkIterationService
 {
     Task GlobalSetup();
     Task GlobalCleanup();
@@ -16,6 +16,6 @@ public interface IDbGuidBenchmarkIterationService
     Task BulkInsertLatencyBenchmarkIterationCleanup();
 }
 
-public interface IDbGuidBenchmarkIterationService<TEntity, TDbContext> : IDbGuidBenchmarkIterationService
+public interface IDbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGuidInsertBenchmarkIterationService
     where TEntity : class, ICreatable<TEntity>
     where TDbContext : DbContext;

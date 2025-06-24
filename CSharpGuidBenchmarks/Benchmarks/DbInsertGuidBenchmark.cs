@@ -89,7 +89,7 @@ public class DbInsertGuidBenchmark
     }
     
     
-    protected IDbGuidBenchmarkIterationService _benchmarkIterationService = null!;
+    protected IDbGuidInsertBenchmarkIterationService InsertBenchmarkIterationService = null!;
     protected static Type PrevEntityType = null!;
 
     [GlobalSetup]
@@ -105,27 +105,27 @@ public class DbInsertGuidBenchmark
             canSoftDbRespawn);
         
         var serviceProvider = ServiceProviderFactory.CreateForDbInsertGuidBenchmark(configuration);
-        _benchmarkIterationService = serviceProvider.GetRequiredService<IDbGuidBenchmarkIterationService>();
-        if (_benchmarkIterationService is null)
+        InsertBenchmarkIterationService = serviceProvider.GetRequiredService<IDbGuidInsertBenchmarkIterationService>();
+        if (InsertBenchmarkIterationService is null)
         {
             throw new InvalidOperationException("Benchmark iteration service is not registered in the service provider.");
         }
         
-        await _benchmarkIterationService.GlobalSetup();
+        await InsertBenchmarkIterationService.GlobalSetup();
     }
     
     [GlobalCleanup]
     public async Task GlobalCleanup()
     {
         //await _dbGuidBenchmarkService.GlobalCleanup();
-        _benchmarkIterationService = null!;
+        InsertBenchmarkIterationService = null!;
         PrevEntityType = EntityType.Value;
     }
     
     [IterationSetup]
     public void IterationSetup()
     {
-        _benchmarkIterationService.IterationSetup().GetAwaiter().GetResult();
+        InsertBenchmarkIterationService.IterationSetup().GetAwaiter().GetResult();
     }
     
     [IterationCleanup]
@@ -137,33 +137,33 @@ public class DbInsertGuidBenchmark
     [IterationCleanup(Targets = [nameof(SingleInsertLatencyBenchmark)])]
     public void SingleInsertLatencyBenchmarkIterationCleanup()
     {
-        _benchmarkIterationService.SingleInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
+        InsertBenchmarkIterationService.SingleInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
     }
 
     [IterationCleanup(Targets = [nameof(BulkInsertLatencyBenchmark), nameof(BulkInsertOneByOneLatencyBenchmark)])]
     public void BulkInsertLatencyBenchmarkIterationCleanup()
     {
-        _benchmarkIterationService.BulkInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
+        InsertBenchmarkIterationService.BulkInsertLatencyBenchmarkIterationCleanup().GetAwaiter().GetResult();
     }
     
     [Benchmark]
     [IterationCount(20)]
     public async Task SingleInsertLatencyBenchmark()
     {
-        await _benchmarkIterationService.SingleInsertLatencyBenchmark();
+        await InsertBenchmarkIterationService.SingleInsertLatencyBenchmark();
     }
     
     [Benchmark]
     [IterationCount(5)]
     public async Task BulkInsertLatencyBenchmark()
     {
-        await _benchmarkIterationService.BulkInsertLatencyBenchmark();
+        await InsertBenchmarkIterationService.BulkInsertLatencyBenchmark();
     }
     
     [Benchmark]
     [IterationCount(5)]
     public async Task BulkInsertOneByOneLatencyBenchmark()
     {
-        await _benchmarkIterationService.BulkInsertOneByOneLatencyBenchmark();
+        await InsertBenchmarkIterationService.BulkInsertOneByOneLatencyBenchmark();
     }
 }
