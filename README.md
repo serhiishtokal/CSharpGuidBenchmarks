@@ -1,0 +1,174 @@
+# C# GUID Benchmarks
+
+A comprehensive benchmarking suite for analyzing the performance characteristics of different GUID types (v4 vs v7) and database storage strategies in .NET applications.
+
+## 🎯 Overview
+
+This project provides detailed performance comparisons between:
+- **GUID v4** (Random) vs **GUID v7** (Time-ordered)
+- **Different database storage formats** (Standard vs Binary16)
+- **Various indexing strategies** (Clustered vs Non-clustered primary keys)
+- **Multiple database engines** (SQL Server vs PostgreSQL)
+
+## 🏗️ Architecture
+
+The solution follows a clean architecture pattern with multiple projects:
+
+```
+├── CSharpGuidBenchmarks/              # Main console application with benchmarks
+├── CSharpGuidBenchmarks.Application/  # Application layer with services
+├── CSharpGuidBenchmarks.Domain/       # Domain entities and interfaces
+├── CSharpGuidBenchmarks.Infrastructure/        # Infrastructure abstractions
+├── CSharpGuidBenchmarks.Infrastructure.Common/ # Common infrastructure utilities
+├── CSharpGuidBenchmarks.Infrastructure.Postgres/ # PostgreSQL implementation
+├── CSharpGuidBenchmarks.Infrastructure.SqlServer/ # SQL Server implementation
+├── GuidV7V4CreationBenchmarks/        # Simple GUID creation benchmarks
+└── Tests/                             # Unit tests
+```
+
+## 🧪 Benchmark Categories
+
+### 1. Database Insert Benchmarks (`DbInsertGuidBenchmark`)
+
+Tests various entity types with different GUID strategies:
+
+#### Clustered Primary Key Entities
+- `GuidV4ClusteredPkEntity` - Standard GUID v4 as clustered primary key
+- `GuidV4Bin16ClusteredPkEntity` - GUID v4 stored as binary(16)
+- `GuidV7ClusteredPkEntity` - GUID v7 as clustered primary key  
+- `GuidV7Bin16ClusteredPkEntity` - GUID v7 stored as binary(16)
+- `IntClusteredPkEntity` - Integer clustered primary key (baseline)
+
+#### Integer Primary Key with GUID Alternate Key
+- `IntClusteredPkWithAlternateGuidV4Entity`
+- `IntClusteredPkWithAlternateGuidV4Bin16Entity`
+- `IntClusteredPkWithAlternateGuidV7Entity`
+- `IntClusteredPkWithAlternateGuidV7Bin16Entity`
+
+#### Non-Clustered GUID Primary Key with Sequential Clustered Index
+- Int-based sequential clustered indexes
+- Long-based sequential clustered indexes
+- Both with GUID v4/v7 variants (standard and binary16)
+
+### 2. GUID Creation Benchmarks (`GuidV7V4CreationBenchmark`)
+
+Simple benchmarks comparing:
+- `Guid.NewGuid()` (v4) vs `Guid.CreateVersion7()` (v7)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- .NET 9.0 SDK
+- Docker and Docker Compose (for database containers)
+- SQL Server and/or PostgreSQL (can be run via Docker)
+
+### Quick Start
+
+1. **Clone the repository**
+   ```powershell
+   git clone <repository-url>
+   cd CSharpGuidBenchmarks
+   ```
+
+2. **Start the databases using Docker Compose**
+   ```powershell
+   docker-compose up -d
+   ```
+
+3. **Run the main database benchmarks**
+   ```powershell
+   dotnet run --project CSharpGuidBenchmarks --configuration Release
+   ```
+
+4. **Run GUID creation benchmarks**
+   ```powershell
+   dotnet run --project GuidV7V4CreationBenchmarks --configuration Release
+   ```
+
+### Configuration
+
+The application uses `appsettings.json` for configuration. Connection strings and other settings can be configured there or via environment variables.
+
+## 📊 Benchmark Parameters
+
+### Database Types
+- SQL Server
+- PostgreSQL
+
+### Record Counts
+The benchmarks test with varying initial database sizes:
+- 3,000,000 to 5,000,000 records (500K increments)
+- 5,000,000 to 16,000,000 records (1M increments)
+
+### Benchmark Types
+1. **Single Insert Latency** - Individual record insertion performance
+2. **Bulk Insert Latency** - Batch insertion performance (configurable batch size)
+3. **Bulk Insert One-by-One** - Sequential individual inserts in batch
+
+## 🔧 Key Technologies
+
+- **BenchmarkDotNet** - Performance benchmarking framework
+- **Entity Framework Core 9.0** - ORM for database operations
+- **SQL Server & PostgreSQL** - Database engines
+- **Bogus** - Test data generation
+- **Docker** - Containerized database setup
+
+## 📈 Expected Insights
+
+This benchmark suite helps answer questions like:
+
+- **Performance**: How do GUID v7s compare to v4s for database inserts?
+- **Storage**: What's the impact of binary16 storage vs standard GUID storage?
+- **Indexing**: How do different primary key strategies affect performance?
+- **Fragmentation**: Do time-ordered GUIDs (v7) reduce index fragmentation?
+- **Database Engines**: How do SQL Server and PostgreSQL handle different GUID strategies?
+
+## 🛠️ Development
+
+### Running Tests
+```powershell
+dotnet test
+```
+
+### Building for Release
+```powershell
+dotnet build --configuration Release
+```
+
+### Docker Build
+```powershell
+docker build -f CSharpGuidBenchmarks/Dockerfile .
+```
+
+## 📋 Results Analysis
+
+Benchmark results are automatically generated by BenchmarkDotNet and include:
+- Execution time (mean, median, standard deviation)
+- Memory allocation and garbage collection metrics
+- Throughput measurements
+- Statistical significance testing
+
+Results can be exported to various formats including HTML, CSV, and JSON for further analysis.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Run benchmarks to verify performance impact
+5. Submit a pull request
+
+## 📝 License
+
+[Add your license information here]
+
+## 🔗 Related Resources
+
+- [GUID v7 Specification (RFC 9562)](https://tools.ietf.org/html/rfc9562)
+- [BenchmarkDotNet Documentation](https://benchmarkdotnet.org/)
+- [Entity Framework Core Documentation](https://docs.microsoft.com/en-us/ef/core/)
+
+---
+
+**Note**: This project is designed for performance analysis and research. Always test thoroughly in your specific environment before making production decisions based on these benchmarks.
