@@ -61,6 +61,7 @@ public class DbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGui
         await LogLine("IterationSetup: Database ready.");
 
         _iterationEntities = GenerateEntities(_configuration.RecordsPerBulkInsert).ToArray();
+        await LogLine("IterationSetup: Starting benchmark...");
     }
 
     public Task IterationCleanup()
@@ -181,8 +182,9 @@ public class DbGuidInsertBenchmarkIterationService<TEntity, TDbContext> : IDbGui
     private async Task LogLine(string message)
     {
         var entityTypeString = _entityType.ShortDisplayName();
+        var dbContextTypeString = typeof(TDbContext).ShortDisplayName();
         var dbRecordsState = _configuration.InitialDbRecordsNumberState;
-        _logger.LogInformation("[{entityTypeString} db state {dbRecordsState}] {message}", entityTypeString, dbRecordsState, message);
+        _logger.LogInformation("[{dbContextTypeString}][{entityTypeString} db state {dbRecordsState}] {message}",dbContextTypeString, entityTypeString, dbRecordsState, message);
     }
 
     private async Task<int> GetCurrentRecordsCountAsync()
