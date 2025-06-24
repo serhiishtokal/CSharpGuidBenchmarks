@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CSharpGuidBenchmarks.Infrastructure.PostgreSql\CSharpGuidBenchmarks.Infrastructure.PostgreSql.csproj" />
+      <ProjectReference Include="..\CSharpGuidBenchmarks.Infrastructure.Postgres\CSharpGuidBenchmarks.Infrastructure.Postgres.csproj" />
       <ProjectReference Include="..\CSharpGuidBenchmarks.Infrastructure.SqlServer\CSharpGuidBenchmarks.Infrastructure.SqlServer.csproj" />
     </ItemGroup>
 

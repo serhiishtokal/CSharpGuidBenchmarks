@@ -1,6 +1,5 @@
 namespace CSharpGuidBenchmarks.Application.Services;
 
-public interface ISqlServerDbContext:IDbContext
+public interface ISqlServerDbContext : IDbContext
 {
-    
-}
+} 

@@ -1,6 +1,5 @@
 namespace CSharpGuidBenchmarks.Application.Services;
 
-public interface IPostgeSqlDbContext:IDbContext
+public interface IPostgresDbContext : IDbContext
 {
-
 }

@@ -55,9 +55,8 @@ public class DbInsertGuidBenchmark
     public static IEnumerable<ParamWrapper<DbTypeEnum>> DbTypes{
         get
         {
-            yield return new ParamWrapper<DbTypeEnum>(DbTypeEnum.SqlServer, nameof(DbTypeEnum.SqlServer)+"1");
-            yield return new ParamWrapper<DbTypeEnum>(DbTypeEnum.SqlServer, nameof(DbTypeEnum.SqlServer)+"2");
-            //yield return new ParamWrapper<DbTypeEnum>(DbTypeEnum.PostgreSql, nameof(DbTypeEnum.PostgreSql));
+            yield return new ParamWrapper<DbTypeEnum>(DbTypeEnum.SqlServer, nameof(DbTypeEnum.SqlServer));
+            yield return new ParamWrapper<DbTypeEnum>(DbTypeEnum.PostgreSql, nameof(DbTypeEnum.PostgreSql));
         }
     }
     public static IEnumerable<ParamWrapper<Type>> EntityTypes

@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidBenchmarks.Applic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidBenchmarks.Infrastructure", "CSharpGuidBenchmarks.Infrastructure\CSharpGuidBenchmarks.Infrastructure.csproj", "{D374CE03-B6EB-4062-B6E0-253FF9E537A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidBenchmarks.Infrastructure.PostgreSql", "CSharpGuidBenchmarks.Infrastructure.PostgreSql\CSharpGuidBenchmarks.Infrastructure.PostgreSql.csproj", "{F9EC3DD2-6173-4627-8007-B563D3057792}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidBenchmarks.Infrastructure.Postgres", "CSharpGuidBenchmarks.Infrastructure.Postgres\CSharpGuidBenchmarks.Infrastructure.Postgres.csproj", "{F9EC3DD2-6173-4627-8007-B563D3057792}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidBenchmarks.Infrastructure.Common", "CSharpGuidBenchmarks.Infrastructure.Common\CSharpGuidBenchmarks.Infrastructure.Common.csproj", "{C52A7518-AB3E-4242-8EC5-4EBC3845AC25}"
 EndProject

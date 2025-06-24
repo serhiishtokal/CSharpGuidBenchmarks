@@ -1,6 +1,6 @@
 using CSharpGuidBenchmarks.Application.Extensions;
 using CSharpGuidBenchmarks.Infrastructure.Common;
-using CSharpGuidBenchmarks.Infrastructure.PostgreSql.Extensions;
+using CSharpGuidBenchmarks.Infrastructure.Postgres.Extensions;
 using CSharpGuidBenchmarks.Infrastructure.SqlServer.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
